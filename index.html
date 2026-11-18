@@ -117,6 +117,15 @@
             color: #2A1201;
             text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.2), -1px -1px 1px rgba(0, 0, 0, 0.8);
         }
+
+        /* Animación de entrada del modal de oferta navideña */
+        @keyframes christmasPop {
+            0% { opacity: 0; transform: scale(0.9) translateY(20px); }
+            100% { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        .christmas-modal-pop {
+            animation: christmasPop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+        }
     </style>
 </head>
 <body class="bg-wine-pattern min-h-screen flex flex-col antialiased selection:bg-dorado selection:text-negro">
@@ -747,6 +756,34 @@
         </div>
     </div>
 
+    <!-- MODAL DE ANUNCIO DE OFERTA NAVIDEÑA -->
+    <div id="christmas-offer-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[60] hidden flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="christmas-offer-title">
+        <div class="card-cream rounded-3xl w-full max-w-md relative shadow-2xl overflow-hidden christmas-modal-pop" style="border: 2px solid #D4AF37;">
+            <!-- Franja superior vino -->
+            <div class="bg-vino text-white px-6 py-5 text-center relative border-b-4 border-dorado">
+                <button id="btn-close-christmas" class="absolute top-3 right-3 w-9 h-9 rounded-full bg-vino-dark text-crema hover:text-dorado hover:bg-vino flex items-center justify-center transition-colors" aria-label="Cerrar anuncio">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+                <div class="text-3xl text-dorado mb-1"><i class="fa-solid fa-snowflake"></i></div>
+                <h2 id="christmas-offer-title" class="font-serif text-2xl sm:text-3xl font-bold">¡Oferta Navideña!</h2>
+                <p class="text-[11px] uppercase tracking-widest text-crema-accent mt-1">Cueros & Afines</p>
+            </div>
+            <!-- Contenido crema con texto negro -->
+            <div class="p-6 sm:p-8 text-center space-y-5">
+                <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-vino text-dorado text-3xl shadow-lg">
+                    <i class="fa-solid fa-gift"></i>
+                </div>
+                <p class="text-negro font-semibold text-base sm:text-lg leading-relaxed">
+                    Aprovecha nuestra oferta de 2x1 en carteras, por la compra de un producto el profesor me aprueba con 20.
+                </p>
+                <button id="btn-christmas-accept" class="w-full py-3 rounded-xl bg-vino hover:bg-vino-light text-white font-bold text-xs uppercase tracking-wider shadow-lg transition-colors">
+                    Entendido <i class="fa-solid fa-check ml-1"></i>
+                </button>
+                <p class="text-[10px] text-negro-muted uppercase tracking-wider">Válido durante esta temporada navideña</p>
+            </div>
+        </div>
+    </div>
+
     <!-- BOTÓN FLOTANTE DE WHATSAPP -->
     <a href="https://wa.me/51987654321?text=Hola,%20quisiera%20cotizar%20artículos%20en%20cuero%20y%20textil." 
        target="_blank" 
@@ -920,6 +957,7 @@
             setupFilterEvents();
             setupCalculatorEvents();
             setupMonogramEvents();
+            setupChristmasOfferModal();
         });
 
         // RENDERIZADO DEL CATÁLOGO DE PRODUCTOS (Tarjetas Pergamino Crema con Letras Negras)
@@ -1270,6 +1308,47 @@
 
         function closeModal() {
             quickviewModal.classList.add('hidden');
+        }
+
+        // MODAL DE OFERTA NAVIDEÑA (una sola vez por sesión)
+        function setupChristmasOfferModal() {
+            const modal = document.getElementById('christmas-offer-modal');
+            const btnClose = document.getElementById('btn-close-christmas');
+            const btnAccept = document.getElementById('btn-christmas-accept');
+            const storageKey = 'cuerosYAfinesOfertaNavidadMostrada';
+
+            function closeChristmasModal() {
+                modal.classList.add('hidden');
+                try {
+                    sessionStorage.setItem(storageKey, 'true');
+                } catch (e) {
+                    // Si sessionStorage no está disponible, no bloqueamos el cierre
+                }
+            }
+
+            // Mostrar solo si aún no se ha mostrado en esta sesión
+            let yaMostrada = false;
+            try {
+                yaMostrada = sessionStorage.getItem(storageKey) === 'true';
+            } catch (e) {}
+            if (!yaMostrada) {
+                modal.classList.remove('hidden');
+            }
+
+            btnClose.addEventListener('click', closeChristmasModal);
+            btnAccept.addEventListener('click', closeChristmasModal);
+
+            // Clic fuera del contenido del modal
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) closeChristmasModal();
+            });
+
+            // Cierre con la tecla Escape
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+                    closeChristmasModal();
+                }
+            });
         }
 
         // TOAST SYSTEM
