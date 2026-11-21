@@ -126,25 +126,94 @@
         .christmas-modal-pop {
             animation: christmasPop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) both;
         }
+
+        /* Transiciones y microanimaciones (respetan movimiento reducido) */
+        @keyframes catalogFade {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .catalog-enter { animation: catalogFade 0.32s ease both; }
+
+        @keyframes modalPop {
+            from { opacity: 0; transform: scale(0.97) translateY(12px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        .modal-enter { animation: modalPop 0.3s cubic-bezier(0.22, 1, 0.36, 1) both; }
+
+        @keyframes drawerIn {
+            from { opacity: 0.6; transform: translateX(28px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        .drawer-enter { animation: drawerIn 0.28s ease both; }
+
+        @keyframes cartPulse {
+            0%, 100% { transform: scale(1); }
+            45% { transform: scale(1.14); }
+        }
+        .cart-badge-pop { animation: cartPulse 0.45s ease; }
+
+        @keyframes couponGlow {
+            0% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.65); }
+            100% { box-shadow: 0 0 0 9px rgba(212, 175, 55, 0); }
+        }
+        .coupon-applied { animation: couponGlow 0.6s ease-out; border-radius: 0.5rem; }
+
+        @keyframes favoritePop {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.22); }
+        }
+        .favorite-pop { animation: favoritePop 0.35s ease; }
+
+        @keyframes toastIn {
+            from { opacity: 0; transform: translateX(16px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        .toast-enter { animation: toastIn 0.28s ease both; }
+
+        /* Cabecera compacta al hacer scroll */
+        #site-header .header-row,
+        #site-header .header-logo-mark,
+        #site-header .header-brand-title,
+        #site-header .header-brand-subtitle {
+            transition: height 0.3s ease, width 0.3s ease, font-size 0.3s ease, opacity 0.3s ease;
+        }
+        #site-header.header-compact .header-row { height: 4rem; }
+        #site-header.header-compact .header-logo-mark { width: 2.25rem; height: 2.25rem; }
+        #site-header.header-compact .header-brand-title { font-size: 1.25rem; }
+        #site-header.header-compact .header-brand-subtitle { opacity: 0.7; }
+
+        /* Botón volver arriba */
+        #btn-back-to-top {
+            transition: opacity 0.25s ease, transform 0.25s ease, background-color 0.25s ease, visibility 0.25s ease;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            html { scroll-behavior: auto; }
+            *, *::before, *::after {
+                animation-duration: 0.001ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.001ms !important;
+            }
+        }
     </style>
 </head>
 <body class="bg-wine-pattern min-h-screen flex flex-col antialiased selection:bg-dorado selection:text-negro">
 
     <!-- HEADER DE NAVEGACIÓN -->
-    <header class="sticky top-0 z-40 bg-vino-dark/95 backdrop-blur-md border-b border-dorado/30 shadow-2xl">
+    <header id="site-header" class="sticky top-0 z-40 bg-vino-dark/95 backdrop-blur-md border-b border-dorado/30 shadow-2xl">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-20">
+            <div class="header-row flex items-center justify-between h-20">
                 
                 <!-- Logo -->
                 <a href="#" class="flex items-center gap-3 group">
-                    <div class="w-11 h-11 rounded-full border-2 border-dorado/50 bg-vino-dark flex items-center justify-center shadow-lg shadow-dorado/20 group-hover:scale-105 transition-transform">
+                    <div class="header-logo-mark w-11 h-11 rounded-full border-2 border-dorado/50 bg-vino-dark flex items-center justify-center shadow-lg shadow-dorado/20 group-hover:scale-105 transition-transform">
                         <span class="font-serif text-lg font-bold text-dorado tracking-widest">CA</span>
                     </div>
                     <div>
-                        <span class="font-serif text-2xl font-bold tracking-tight text-white block leading-none">
+                        <span class="header-brand-title font-serif text-2xl font-bold tracking-tight text-white block leading-none">
                             CUEROS <span class="text-dorado">&</span> AFINES
                         </span>
-                        <span class="text-[10px] uppercase tracking-widest text-crema-accent font-medium">Confección & Marroquinería Fine</span>
+                        <span class="header-brand-subtitle text-[10px] uppercase tracking-widest text-crema-accent font-medium">Confección & Marroquinería Fine</span>
                     </div>
                 </a>
 
@@ -186,39 +255,45 @@
     <main class="flex-grow">
 
         <!-- HERO SECTION BANNER PRINCIPAL -->
-        <section id="inicio" class="relative py-16 lg:py-24 overflow-hidden border-b border-dorado/20">
+        <section id="inicio" class="relative py-20 lg:py-28 overflow-hidden border-b border-dorado/20">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-                <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
                     
-                    <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+                    <div class="lg:col-span-7 space-y-7 lg:space-y-8 text-center lg:text-left">
                         <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-crema/10 border border-dorado/40 text-dorado text-xs font-bold uppercase tracking-widest shadow-md">
                             <i class="fa-solid fa-scissors text-dorado"></i> Taller Artesanal de Marroquinería
                         </div>
 
-                        <h1 class="font-serif text-4xl sm:text-5xl lg:text-6xl font-bold text-white tracking-tight leading-tight">
+                        <h1 class="font-serif text-4xl sm:text-5xl lg:text-6xl font-bold text-white tracking-tight leading-[1.05] max-w-2xl mx-auto lg:mx-0">
                             Arte & Elegancia en <span class="text-transparent bg-clip-text bg-gradient-to-r from-dorado-light via-dorado to-amber-200">Cuero Genuino</span> y Textiles Exclusivos
                         </h1>
 
                         <!-- Tarjeta descriptiva con fondo crema y letras negras -->
-                        <div class="card-cream p-6 rounded-2xl space-y-3">
+                        <div class="card-cream p-6 sm:p-7 rounded-2xl space-y-3 border-l-4 border-l-dorado">
+                            <p class="text-[10px] font-extrabold uppercase tracking-widest text-vino">Nuestra especialidad</p>
                             <p class="text-negro font-medium text-base sm:text-lg leading-relaxed">
                                 Especialistas en la confección de <strong>carteras, mochilas, calzado, correas, billeteras, morrales y monederos</strong>. Diseños para <strong>Dama y Caballero</strong> combinando la resistencia del cuero vacuno legítimo con finas telas textiles seleccionadas.
                             </p>
+                            <div class="flex flex-wrap justify-center lg:justify-start gap-2 pt-1">
+                                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-crema border border-crema-border text-[10px] font-bold text-negro"><i class="fa-solid fa-check text-vino"></i> Cuero vacuno legítimo</span>
+                                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-crema border border-crema-border text-[10px] font-bold text-negro"><i class="fa-solid fa-check text-vino"></i> Telas seleccionadas</span>
+                                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-crema border border-crema-border text-[10px] font-bold text-negro"><i class="fa-solid fa-check text-vino"></i> Hecho a medida</span>
+                            </div>
                         </div>
 
                         <!-- Stats / Badges -->
-                        <div class="grid grid-cols-3 gap-4 pt-2 text-center max-w-lg mx-auto lg:mx-0">
-                            <div class="p-3 rounded-2xl bg-vino-dark/80 border border-dorado/30 flex flex-col items-center gap-2">
+                        <div class="grid grid-cols-3 gap-3 sm:gap-4 pt-2 text-center max-w-lg mx-auto lg:mx-0">
+                            <div class="p-3 sm:p-4 rounded-2xl bg-vino-dark/80 border border-dorado/30 flex flex-col items-center gap-2 shadow-lg">
                                 <i class="fa-solid fa-shield-halved text-dorado text-lg"></i>
                                 <span class="block text-2xl font-serif font-bold text-dorado">100%</span>
                                 <span class="text-xs text-crema-accent">Cuero Legítimo</span>
                             </div>
-                            <div class="p-3 rounded-2xl bg-vino-dark/80 border border-dorado/30 flex flex-col items-center gap-2">
+                            <div class="p-3 sm:p-4 rounded-2xl bg-vino-dark/80 border border-dorado/30 flex flex-col items-center gap-2 shadow-lg">
                                 <i class="fa-solid fa-venus-mars text-dorado text-lg"></i>
                                 <span class="block text-2xl font-serif font-bold text-dorado">Dama &</span>
                                 <span class="text-xs text-crema-accent">Caballero</span>
                             </div>
-                            <div class="p-3 rounded-2xl bg-vino-dark/80 border border-dorado/30 flex flex-col items-center gap-2">
+                            <div class="p-3 sm:p-4 rounded-2xl bg-vino-dark/80 border border-dorado/30 flex flex-col items-center gap-2 shadow-lg">
                                 <i class="fa-solid fa-layer-group text-dorado text-lg"></i>
                                 <span class="block text-2xl font-serif font-bold text-dorado">Textil+</span>
                                 <span class="text-xs text-crema-accent">Cuero Fusiones</span>
@@ -232,6 +307,9 @@
                             <div class="absolute -inset-2 rounded-3xl bg-gradient-to-r from-dorado via-vino-light to-dorado opacity-50 blur-xl"></div>
                             
                             <div class="relative card-cream p-4 rounded-3xl shadow-2xl">
+                                <div class="absolute top-7 left-7 z-10 inline-flex items-center gap-1.5 bg-vino/95 text-crema text-[10px] font-extrabold uppercase tracking-wider px-3 py-1.5 rounded-full border border-dorado/50 shadow-lg">
+                                    <i class="fa-solid fa-hand-sparkles text-dorado"></i> Hecho a mano
+                                </div>
                                 <img src="https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&w=800&q=80" 
                                      alt="Colección Cueros y Afines" 
                                      class="w-full h-80 sm:h-96 object-cover rounded-2xl border border-crema-border"
@@ -247,11 +325,11 @@
                                     </span>
                                 </div>
                             </div>
-                            <div class="mt-4 flex flex-wrap items-center justify-center gap-3">
-                                <a href="#catalogo" class="px-6 py-3 rounded-xl bg-dorado text-vino-dark font-bold text-xs uppercase tracking-wider hover:bg-vino hover:text-white transition-colors shadow-md flex items-center gap-2">
+                            <div class="mt-5 flex flex-col sm:flex-row flex-wrap items-center justify-center gap-3">
+                                <a href="#catalogo" class="w-full sm:w-auto justify-center px-6 py-3.5 rounded-xl bg-dorado text-vino-dark font-bold text-xs uppercase tracking-wider hover:bg-vino hover:text-white hover:-translate-y-0.5 transition-all shadow-md flex items-center gap-2">
                                     <i class="fa-solid fa-compass"></i> Explorar Catálogo
                                 </a>
-                                <a href="#cotizador" class="px-6 py-3 rounded-xl bg-vino text-white font-bold text-xs uppercase tracking-wider border border-dorado hover:bg-vino-light transition-colors shadow-md flex items-center gap-2">
+                                <a href="#cotizador" class="w-full sm:w-auto justify-center px-6 py-3.5 rounded-xl bg-vino text-white font-bold text-xs uppercase tracking-wider border border-dorado hover:bg-vino-light hover:-translate-y-0.5 transition-all shadow-md flex items-center gap-2">
                                     <i class="fa-solid fa-calculator text-dorado"></i> Cotizar Pedido
                                 </a>
                             </div>
@@ -273,6 +351,13 @@
                 <p class="text-crema-accent text-sm sm:text-base">
                     Selecciona y combina filtros para encontrar carteras, mochilas, calzado, correas, billeteras, morrales o monederos.
                 </p>
+                <div class="mt-5 flex flex-wrap items-center justify-center gap-3">
+                    <button id="btn-favorites" type="button" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-vino text-white text-xs font-bold uppercase tracking-wider border border-dorado/50 shadow-lg hover:bg-vino-light transition-colors focus:outline-none focus:ring-2 focus:ring-dorado" aria-haspopup="dialog">
+                        <i class="fa-solid fa-heart text-dorado"></i> Mis favoritos
+                        <span id="favorites-badge" class="bg-dorado text-vino text-[10px] font-extrabold min-w-5 h-5 px-1.5 rounded-full flex items-center justify-center">0</span>
+                    </button>
+                    <span class="text-[11px] font-semibold text-crema-accent">Toca el corazón de una pieza para guardarla.</span>
+                </div>
             </div>
 
             <!-- Panel de Control de Filtros (Fondo Crema con Letras Negras para Alta Claridad) -->
