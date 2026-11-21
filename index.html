@@ -716,14 +716,14 @@
     <!-- DRAWER DE MI COTIZACIÓN / CARRITO -->
     <div id="cart-drawer-overlay" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden">
         <div class="fixed inset-y-0 right-0 max-w-full flex">
-            <div class="w-screen max-w-md card-cream shadow-2xl flex flex-col">
+            <div class="w-screen max-w-md card-cream shadow-2xl flex flex-col" role="dialog" aria-modal="true" aria-labelledby="cart-drawer-title">
                 
                 <div class="p-6 bg-vino text-white flex items-center justify-between border-b border-dorado/40">
                     <div class="flex items-center gap-2">
                         <i class="fa-solid fa-briefcase text-dorado text-xl"></i>
-                        <h3 class="font-serif text-xl font-bold">Mi Lista de Cotización</h3>
+                        <h3 id="cart-drawer-title" class="font-serif text-xl font-bold">Mi Lista de Cotización</h3>
                     </div>
-                    <button id="btn-close-cart" class="w-8 h-8 rounded-full bg-vino-dark text-crema hover:text-dorado flex items-center justify-center">
+                    <button id="btn-close-cart" aria-label="Cerrar lista de cotización" class="w-8 h-8 rounded-full bg-vino-dark text-crema hover:text-dorado flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-dorado">
                         <i class="fa-solid fa-xmark"></i>
                     </button>
                 </div>
@@ -732,13 +732,73 @@
                     <!-- Dinámico -->
                 </div>
 
-                <div class="p-6 bg-white border-t border-crema-border space-y-4">
-                    <div class="flex justify-between items-center">
-                        <span class="text-xs font-bold uppercase text-negro">Subtotal Referencial:</span>
-                        <span id="cart-total-price" class="font-serif text-2xl font-extrabold text-vino">S/. 0.00</span>
+                <div class="p-4 bg-white border-t border-crema-border space-y-3 overflow-y-auto">
+                    <!-- Cupón de descuento -->
+                    <div>
+                        <label for="coupon-input" class="block text-[10px] font-extrabold uppercase tracking-wider text-negro mb-1.5">Cupón de descuento</label>
+                        <div class="flex gap-2">
+                            <input id="coupon-input" type="text" autocomplete="off" spellcheck="false" placeholder="Ej. NAVIDAD10"
+                                class="flex-1 min-w-0 px-3 py-2.5 rounded-xl bg-white border border-crema-border text-negro text-xs font-bold uppercase placeholder:text-negro-muted focus:outline-none focus:ring-2 focus:ring-vino">
+                            <button id="btn-apply-coupon" type="button"
+                                class="px-4 py-2.5 rounded-xl bg-vino hover:bg-vino-light text-white text-xs font-bold uppercase tracking-wider transition-colors focus:outline-none focus:ring-2 focus:ring-vino focus:ring-offset-2">
+                                Aplicar
+                            </button>
+                        </div>
+                        <p id="coupon-message" class="mt-1.5 text-[11px] font-semibold text-vino hidden" role="status" aria-live="polite"></p>
+                        <div id="coupon-status" class="mt-1.5 flex items-center justify-between gap-2 hidden">
+                            <span class="flex items-center gap-1.5 text-[11px] font-bold text-vino">
+                                <i class="fa-solid fa-circle-check"></i>
+                                <span id="coupon-applied-text"></span>
+                            </span>
+                            <button id="btn-remove-coupon" type="button" class="text-[11px] font-bold text-negro-muted hover:text-vino underline rounded focus:outline-none focus:ring-2 focus:ring-vino">
+                                Quitar
+                            </button>
+                        </div>
                     </div>
 
-                    <button id="btn-cart-whatsapp" class="w-full py-3.5 bg-green-600 hover:bg-green-700 text-white font-bold text-xs uppercase tracking-wider rounded-xl shadow-lg transition-colors flex items-center justify-center gap-2">
+                    <!-- Entrega -->
+                    <div>
+                        <label for="delivery-select" class="block text-[10px] font-extrabold uppercase tracking-wider text-negro mb-1.5">Entrega</label>
+                        <select id="delivery-select"
+                            class="w-full px-3 py-2.5 rounded-xl bg-white border border-crema-border text-negro text-xs font-bold focus:outline-none focus:ring-2 focus:ring-vino">
+                            <option value="recojo">Recojo en taller — S/. 0.00</option>
+                            <option value="lima">Lima — S/. 12.00</option>
+                            <option value="provincias">Provincias — S/. 25.00</option>
+                        </select>
+                    </div>
+
+                    <!-- Envío gratis en Lima -->
+                    <div>
+                        <div class="flex justify-between gap-2 text-[10px] font-bold text-negro-muted mb-1.5">
+                            <span>Envío gratis en Lima desde S/. 250</span>
+                            <span id="free-ship-hint" class="text-right">Te faltan S/. 250.00</span>
+                        </div>
+                        <div id="free-ship-progress" class="w-full h-2 rounded-full bg-crema-border overflow-hidden" role="progressbar" aria-label="Progreso para envío gratis en Lima" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                            <div id="free-ship-bar" class="h-full bg-dorado transition-all duration-300" style="width:0%"></div>
+                        </div>
+                    </div>
+
+                    <!-- Resumen de compra -->
+                    <div class="space-y-1.5 pt-2 border-t border-crema-border" aria-live="polite">
+                        <div class="flex justify-between text-xs font-bold text-negro-muted">
+                            <span>Subtotal</span>
+                            <span id="cart-subtotal">S/. 0.00</span>
+                        </div>
+                        <div class="flex justify-between text-xs font-bold">
+                            <span class="text-negro-muted">Descuento</span>
+                            <span id="cart-discount" class="text-vino">− S/. 0.00</span>
+                        </div>
+                        <div class="flex justify-between text-xs font-bold text-negro-muted">
+                            <span>Envío</span>
+                            <span id="cart-shipping">S/. 0.00</span>
+                        </div>
+                        <div class="flex justify-between items-center pt-1.5 border-t border-crema-border">
+                            <span class="text-xs font-extrabold uppercase text-negro">Total</span>
+                            <span id="cart-total-price" class="font-serif text-2xl font-extrabold text-vino">S/. 0.00</span>
+                        </div>
+                    </div>
+
+                    <button id="btn-cart-whatsapp" class="w-full py-3.5 bg-green-600 hover:bg-green-700 text-white font-bold text-xs uppercase tracking-wider rounded-xl shadow-lg transition-colors flex items-center justify-center gap-2 focus:outline-none focus:ring-2 focus:ring-vino focus:ring-offset-2">
                         <i class="fa-brands fa-whatsapp text-lg"></i> Enviar Lista por WhatsApp
                     </button>
                 </div>
@@ -945,6 +1005,24 @@
         let searchQuery = '';
         let sortOption = 'default';
 
+        // CUPONES Y ENTREGA (DEMO SIN BACKEND)
+        const COUPONS = {
+            NAVIDAD10: { code: 'NAVIDAD10', type: 'percent', value: 10, min: 0, expires: '2026-12-31', label: '10% de descuento' },
+            CUERO15: { code: 'CUERO15', type: 'percent', value: 15, min: 200, expires: '2027-01-31', label: '15% de descuento' },
+            BIENVENIDA: { code: 'BIENVENIDA', type: 'fixed', value: 20, min: 100, expires: '2027-03-31', label: 'S/. 20 de descuento' }
+        };
+
+        const DELIVERY_OPTIONS = {
+            recojo: { label: 'Recojo en taller', cost: 0 },
+            lima: { label: 'Lima', cost: 12 },
+            provincias: { label: 'Provincias', cost: 25 }
+        };
+
+        const FREE_SHIPPING_LIMA = 250;
+        const CART_STORAGE_KEY = 'cuerosAfinesCotizacion';
+        let appliedCoupon = null;
+        let deliveryMethod = 'recojo';
+
         // ELEMENTOS DOM
         const productGrid = document.getElementById('product-grid');
         const noProducts = document.getElementById('no-products');
@@ -952,6 +1030,19 @@
         const cartDrawer = document.getElementById('cart-drawer-overlay');
         const cartItemsList = document.getElementById('cart-items-list');
         const cartTotalPrice = document.getElementById('cart-total-price');
+        const cartSubtotalEl = document.getElementById('cart-subtotal');
+        const cartDiscountEl = document.getElementById('cart-discount');
+        const cartShippingEl = document.getElementById('cart-shipping');
+        const couponInput = document.getElementById('coupon-input');
+        const btnApplyCoupon = document.getElementById('btn-apply-coupon');
+        const btnRemoveCoupon = document.getElementById('btn-remove-coupon');
+        const couponMessage = document.getElementById('coupon-message');
+        const couponStatus = document.getElementById('coupon-status');
+        const couponAppliedText = document.getElementById('coupon-applied-text');
+        const deliverySelect = document.getElementById('delivery-select');
+        const freeShipBar = document.getElementById('free-ship-bar');
+        const freeShipHint = document.getElementById('free-ship-hint');
+        const freeShipProgress = document.getElementById('free-ship-progress');
         const quickviewModal = document.getElementById('quickview-modal');
         const modalBody = document.getElementById('modal-body');
 
@@ -961,6 +1052,9 @@
             setupCalculatorEvents();
             setupMonogramEvents();
             setupChristmasOfferModal();
+            setupCartEvents();
+            loadCartState();
+            updateCartUI();
         });
 
         // RENDERIZADO DEL CATÁLOGO DE PRODUCTOS (Tarjetas Pergamino Crema con Letras Negras)
@@ -1214,6 +1308,207 @@
             }
         }
 
+        // CUPONES, ENTREGA Y RESUMEN DE COMPRA
+        function getCartSubtotal() {
+            return quoteCart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+        }
+
+        function getCartQuantity() {
+            return quoteCart.reduce((sum, item) => sum + item.qty, 0);
+        }
+
+        function isWholesaleCart() {
+            return getCartQuantity() >= 12;
+        }
+
+        function normalizeCouponCode(value) {
+            return (value || '').trim().toUpperCase().replace(/\s+/g, '');
+        }
+
+        function isCouponExpired(coupon) {
+            return new Date() > new Date(`${coupon.expires}T23:59:59`);
+        }
+
+        function formatCouponDate(isoDate) {
+            const [year, month, day] = isoDate.split('-');
+            return `${day}/${month}/${year}`;
+        }
+
+        function getAppliedCoupon() {
+            return appliedCoupon ? COUPONS[appliedCoupon] : null;
+        }
+
+        function getDiscount() {
+            const coupon = getAppliedCoupon();
+            if (!coupon) return 0;
+
+            const subtotal = getCartSubtotal();
+            if (isWholesaleCart() || subtotal < coupon.min) return 0;
+
+            if (coupon.type === 'percent') {
+                return Math.round(subtotal * coupon.value) / 100;
+            }
+            return Math.min(coupon.value, subtotal);
+        }
+
+        function getShippingCost() {
+            if (deliveryMethod === 'lima') {
+                return getCartSubtotal() >= FREE_SHIPPING_LIMA ? 0 : DELIVERY_OPTIONS.lima.cost;
+            }
+            return DELIVERY_OPTIONS[deliveryMethod] ? DELIVERY_OPTIONS[deliveryMethod].cost : 0;
+        }
+
+        function setCouponMessage(text, icon = 'fa-circle-exclamation') {
+            if (!text) {
+                couponMessage.textContent = '';
+                couponMessage.classList.add('hidden');
+                return;
+            }
+            couponMessage.innerHTML = `<i class="fa-solid ${icon} mr-1"></i>${text}`;
+            couponMessage.classList.remove('hidden');
+        }
+
+        function updateCartSummary() {
+            const subtotal = getCartSubtotal();
+            let coupon = getAppliedCoupon();
+
+            // Si el cupón dejó de cumplir las condiciones, se desactiva con un aviso claro.
+            if (coupon) {
+                if (quoteCart.length === 0) {
+                    appliedCoupon = null;
+                    coupon = null;
+                } else if (isWholesaleCart()) {
+                    appliedCoupon = null;
+                    coupon = null;
+                    setCouponMessage('El cupón se desactivó: no se combina con el precio mayorista (12 o más unidades).');
+                } else if (subtotal < coupon.min) {
+                    const minimum = coupon.min;
+                    appliedCoupon = null;
+                    coupon = null;
+                    setCouponMessage(`El cupón se desactivó: la compra mínima es de S/. ${minimum.toFixed(2)}.`);
+                }
+            }
+
+            const discount = getDiscount();
+            const shipping = getShippingCost();
+            const total = Math.max(0, subtotal - discount + shipping);
+
+            cartSubtotalEl.textContent = `S/. ${subtotal.toFixed(2)}`;
+            cartDiscountEl.textContent = `− S/. ${discount.toFixed(2)}`;
+            cartShippingEl.textContent = `S/. ${shipping.toFixed(2)}`;
+            cartTotalPrice.textContent = `S/. ${total.toFixed(2)}`;
+
+            if (coupon) {
+                couponStatus.classList.remove('hidden');
+                couponAppliedText.textContent = `Cupón ${coupon.code}: ${coupon.label}`;
+            } else {
+                couponStatus.classList.add('hidden');
+                couponAppliedText.textContent = '';
+            }
+
+            const progress = Math.min(100, (subtotal / FREE_SHIPPING_LIMA) * 100);
+            freeShipBar.style.width = `${progress}%`;
+            freeShipProgress.setAttribute('aria-valuenow', String(Math.round(progress)));
+
+            if (subtotal >= FREE_SHIPPING_LIMA) {
+                freeShipHint.textContent = '¡Envío gratis en Lima disponible!';
+            } else {
+                freeShipHint.textContent = `Te faltan S/. ${(FREE_SHIPPING_LIMA - subtotal).toFixed(2)} para envío gratis`;
+            }
+        }
+
+        function applyCoupon() {
+            const code = normalizeCouponCode(couponInput.value);
+
+            if (!code) {
+                setCouponMessage('Ingresa un código de cupón para aplicarlo.');
+                return;
+            }
+
+            const coupon = COUPONS[code];
+            if (!coupon) {
+                setCouponMessage('Cupón inválido. Verifica el código e inténtalo de nuevo.');
+                return;
+            }
+
+            if (isCouponExpired(coupon)) {
+                setCouponMessage(`El cupón ${coupon.code} venció el ${formatCouponDate(coupon.expires)}.`);
+                return;
+            }
+
+            if (quoteCart.length === 0) {
+                setCouponMessage('Añade productos a tu lista antes de aplicar un cupón.');
+                return;
+            }
+
+            if (isWholesaleCart()) {
+                setCouponMessage('Los cupones no se combinan con el precio mayorista (12 o más unidades).');
+                return;
+            }
+
+            const subtotal = getCartSubtotal();
+            if (subtotal < coupon.min) {
+                setCouponMessage(`El cupón ${coupon.code} requiere una compra mínima de S/. ${coupon.min.toFixed(2)}.`);
+                return;
+            }
+
+            appliedCoupon = coupon.code;
+            couponInput.value = coupon.code;
+            setCouponMessage('');
+            updateCartUI();
+        }
+
+        function removeCoupon() {
+            appliedCoupon = null;
+            couponInput.value = '';
+            setCouponMessage('Cupón quitado. Puedes aplicar otro cuando quieras.', 'fa-circle-info');
+            updateCartUI();
+        }
+
+        function saveCartState() {
+            try {
+                localStorage.setItem(CART_STORAGE_KEY, JSON.stringify({
+                    items: quoteCart.map(item => ({ id: item.id, qty: item.qty })),
+                    coupon: appliedCoupon,
+                    delivery: deliveryMethod
+                }));
+            } catch (error) {
+                // Si el navegador bloquea localStorage, la demo sigue funcionando sin guardar.
+            }
+        }
+
+        function loadCartState() {
+            try {
+                const raw = localStorage.getItem(CART_STORAGE_KEY);
+                if (!raw) return;
+
+                const data = JSON.parse(raw);
+
+                if (Array.isArray(data.items)) {
+                    quoteCart = data.items
+                        .map(saved => {
+                            const product = productsList.find(p => p.id === saved.id);
+                            if (!product) return null;
+                            return { ...product, qty: Math.max(1, parseInt(saved.qty, 10) || 1) };
+                        })
+                        .filter(Boolean);
+                }
+
+                if (data.coupon && COUPONS[data.coupon] && !isCouponExpired(COUPONS[data.coupon])) {
+                    appliedCoupon = data.coupon;
+                    couponInput.value = data.coupon;
+                }
+
+                if (data.delivery && DELIVERY_OPTIONS[data.delivery]) {
+                    deliveryMethod = data.delivery;
+                    deliverySelect.value = data.delivery;
+                }
+            } catch (error) {
+                // Datos corruptos o almacenamiento bloqueado: se inicia con la lista vacía.
+                quoteCart = [];
+            }
+        }
+
         function updateCartUI() {
             const count = quoteCart.reduce((sum, i) => sum + i.qty, 0);
             cartBadge.innerText = count;
@@ -1251,8 +1546,8 @@
                 });
             }
 
-            const total = quoteCart.reduce((sum, i) => sum + (i.price * i.qty), 0);
-            cartTotalPrice.innerText = `S/. ${total.toFixed(2)}`;
+            updateCartSummary();
+            saveCartState();
         }
 
         function toggleCartDrawer() {
@@ -1270,10 +1565,44 @@
                 msg += `${index + 1}. *${item.name}* [${item.badge}] x${item.qty} = S/. ${(item.price * item.qty).toFixed(2)}\n`;
             });
 
-            const total = quoteCart.reduce((sum, i) => sum + (i.price * i.qty), 0);
-            msg += `\n*Monto Referencial Total: S/. ${total.toFixed(2)}*\n\nQuedo a la espera de su confirmación. ¡Muchas gracias!`;
+            const subtotal = getCartSubtotal();
+            const discount = getDiscount();
+            const shipping = getShippingCost();
+            const total = Math.max(0, subtotal - discount + shipping);
+            const delivery = DELIVERY_OPTIONS[deliveryMethod] || DELIVERY_OPTIONS.recojo;
+
+            msg += `\n*Subtotal:* S/. ${subtotal.toFixed(2)}\n`;
+            msg += `*Cupón:* ${appliedCoupon ? `${appliedCoupon} (− S/. ${discount.toFixed(2)})` : 'Ninguno'}\n`;
+            msg += `*Entrega:* ${delivery.label} (S/. ${shipping.toFixed(2)})\n`;
+            msg += `*Total referencial: S/. ${total.toFixed(2)}*\n\nQuedo a la espera de su confirmación. ¡Muchas gracias!`;
 
             window.open(`https://wa.me/51987654321?text=${encodeURIComponent(msg)}`, '_blank');
+        }
+
+        // EVENTOS DEL CARRITO: CUPÓN, ENTREGA Y CIERRE ACCESIBLE
+        function setupCartEvents() {
+            btnApplyCoupon.addEventListener('click', applyCoupon);
+
+            couponInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    applyCoupon();
+                }
+            });
+
+            btnRemoveCoupon.addEventListener('click', removeCoupon);
+
+            deliverySelect.addEventListener('change', () => {
+                deliveryMethod = deliverySelect.value;
+                updateCartUI();
+            });
+
+            // Escape cierra el panel del carrito
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && !cartDrawer.classList.contains('hidden')) {
+                    cartDrawer.classList.add('hidden');
+                }
+            });
         }
 
         // VISTA RÁPIDA EN MODAL
