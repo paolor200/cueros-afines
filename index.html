@@ -798,6 +798,10 @@
                         </div>
                     </div>
 
+                    <button id="btn-checkout" type="button" class="w-full py-3.5 bg-vino hover:bg-vino-light text-white font-bold text-xs uppercase tracking-wider rounded-xl shadow-lg transition-colors flex items-center justify-center gap-2 focus:outline-none focus:ring-2 focus:ring-vino focus:ring-offset-2">
+                        <i class="fa-solid fa-bag-shopping"></i> Finalizar pedido
+                    </button>
+
                     <button id="btn-cart-whatsapp" class="w-full py-3.5 bg-green-600 hover:bg-green-700 text-white font-bold text-xs uppercase tracking-wider rounded-xl shadow-lg transition-colors flex items-center justify-center gap-2 focus:outline-none focus:ring-2 focus:ring-vino focus:ring-offset-2">
                         <i class="fa-brands fa-whatsapp text-lg"></i> Enviar Lista por WhatsApp
                     </button>
@@ -843,6 +847,223 @@
                     Entendido <i class="fa-solid fa-check ml-1"></i>
                 </button>
                 <p class="text-[10px] text-negro-muted uppercase tracking-wider">Válido durante esta temporada navideña</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DE FINALIZAR PEDIDO (PAGOS SIMULADOS) -->
+    <div id="checkout-modal" class="fixed inset-0 bg-black/85 backdrop-blur-sm z-[70] hidden flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="checkout-title">
+        <div class="card-cream w-full max-w-2xl rounded-3xl shadow-2xl overflow-hidden max-h-[92vh] flex flex-col">
+
+            <!-- Cabecera -->
+            <div class="bg-vino text-white px-5 sm:px-6 py-4 flex items-center justify-between gap-3 border-b-4 border-dorado shrink-0">
+                <div class="flex items-center gap-2 min-w-0">
+                    <i class="fa-solid fa-bag-shopping text-dorado text-lg"></i>
+                    <h3 id="checkout-title" class="font-serif text-lg sm:text-xl font-bold truncate">Finalizar pedido</h3>
+                </div>
+                <button id="btn-close-checkout" type="button" aria-label="Cerrar finalizar pedido" class="w-9 h-9 rounded-full bg-vino-dark text-crema hover:text-dorado hover:bg-vino flex items-center justify-center transition-colors focus:outline-none focus:ring-2 focus:ring-dorado shrink-0">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- Progreso y aviso fijo de demostración -->
+            <div class="px-5 sm:px-6 pt-4 pb-3 bg-crema border-b border-crema-border shrink-0">
+                <div class="flex items-center justify-between gap-1 text-[10px] font-extrabold uppercase tracking-wider">
+                    <span data-checkout-step-label="1" class="text-vino">1. Tus datos</span>
+                    <span data-checkout-step-label="2" class="text-negro-muted">2. Pago</span>
+                    <span data-checkout-step-label="3" class="text-negro-muted">3. Confirmación</span>
+                </div>
+                <div id="checkout-progress" class="mt-2 w-full h-2 rounded-full bg-crema-border overflow-hidden" role="progressbar" aria-label="Progreso del pedido" aria-valuemin="1" aria-valuemax="3" aria-valuenow="1">
+                    <div id="checkout-progress-bar" class="h-full bg-dorado transition-all duration-300" style="width:33.33%"></div>
+                </div>
+                <div class="mt-3 flex items-start gap-2 rounded-xl border border-dorado bg-dorado/10 px-3 py-2">
+                    <i class="fa-solid fa-triangle-exclamation text-vino mt-0.5"></i>
+                    <p class="text-[11px] font-bold text-negro">Modo demostración: no se realizan cobros reales.</p>
+                </div>
+            </div>
+
+            <!-- Contenido desplazable -->
+            <div id="checkout-body" class="flex-1 overflow-y-auto px-5 sm:px-6 py-5 space-y-5">
+                <div id="checkout-summary" class="rounded-2xl border border-crema-border bg-white p-4"></div>
+
+                <!-- Paso 1: Tus datos -->
+                <form id="checkout-step-1" class="space-y-3" novalidate>
+                    <div class="flex items-center justify-between gap-2">
+                        <h4 class="font-serif text-lg font-bold text-negro">Tus datos</h4>
+                        <span id="checkout-delivery-label" class="text-[10px] font-bold uppercase tracking-wider text-negro-muted text-right"></span>
+                    </div>
+                    <div>
+                        <label for="checkout-name" class="block text-[10px] font-extrabold uppercase tracking-wider text-negro mb-1">Nombre completo</label>
+                        <input id="checkout-name" type="text" autocomplete="name" placeholder="Ej. Ana Torres"
+                            class="w-full px-3 py-2.5 rounded-xl bg-white border border-crema-border text-negro text-xs font-bold focus:outline-none focus:ring-2 focus:ring-vino"
+                            aria-describedby="err-checkout-name">
+                        <p id="err-checkout-name" class="mt-1 text-[11px] font-semibold text-vino hidden" role="alert"></p>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div>
+                            <label for="checkout-phone" class="block text-[10px] font-extrabold uppercase tracking-wider text-negro mb-1">Celular / WhatsApp</label>
+                            <input id="checkout-phone" type="tel" inputmode="numeric" autocomplete="tel" placeholder="987 654 321"
+                                class="w-full px-3 py-2.5 rounded-xl bg-white border border-crema-border text-negro text-xs font-bold focus:outline-none focus:ring-2 focus:ring-vino"
+                                aria-describedby="err-checkout-phone">
+                            <p id="err-checkout-phone" class="mt-1 text-[11px] font-semibold text-vino hidden" role="alert"></p>
+                        </div>
+                        <div>
+                            <label for="checkout-email" class="block text-[10px] font-extrabold uppercase tracking-wider text-negro mb-1">Correo (opcional)</label>
+                            <input id="checkout-email" type="email" autocomplete="email" placeholder="ana@ejemplo.com"
+                                class="w-full px-3 py-2.5 rounded-xl bg-white border border-crema-border text-negro text-xs font-bold focus:outline-none focus:ring-2 focus:ring-vino"
+                                aria-describedby="err-checkout-email">
+                            <p id="err-checkout-email" class="mt-1 text-[11px] font-semibold text-vino hidden" role="alert"></p>
+                        </div>
+                    </div>
+                    <div id="checkout-address-wrap" class="hidden">
+                        <label for="checkout-address" class="block text-[10px] font-extrabold uppercase tracking-wider text-negro mb-1">Dirección de entrega</label>
+                        <input id="checkout-address" type="text" autocomplete="street-address" placeholder="Calle, número y distrito"
+                            class="w-full px-3 py-2.5 rounded-xl bg-white border border-crema-border text-negro text-xs font-bold focus:outline-none focus:ring-2 focus:ring-vino"
+                            aria-describedby="err-checkout-address">
+                        <p id="err-checkout-address" class="mt-1 text-[11px] font-semibold text-vino hidden" role="alert"></p>
+                    </div>
+                    <p class="text-[10px] text-negro-muted">Estos datos se usan solo para coordinar la entrega de esta demostración y no se guardan en el navegador.</p>
+                </form>
+
+                <!-- Paso 2: Pago -->
+                <div id="checkout-step-2" class="hidden space-y-4">
+                    <div>
+                        <h4 class="font-serif text-lg font-bold text-negro">Método de pago</h4>
+                        <p class="text-[11px] text-negro-muted">Elige un método simulado. No se procesará ningún cobro.</p>
+                    </div>
+
+                    <div id="checkout-payment-methods" class="grid grid-cols-2 sm:grid-cols-3 gap-2" role="group" aria-label="Método de pago">
+                        <button type="button" data-pay="yape" aria-pressed="true" class="pay-method flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl border text-xs font-bold transition-colors focus:outline-none focus:ring-2 focus:ring-vino">
+                            <i class="fa-solid fa-mobile-screen-button"></i> Yape
+                        </button>
+                        <button type="button" data-pay="plin" aria-pressed="false" class="pay-method flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl border text-xs font-bold transition-colors focus:outline-none focus:ring-2 focus:ring-vino">
+                            <i class="fa-solid fa-bolt"></i> Plin
+                        </button>
+                        <button type="button" data-pay="tarjeta" aria-pressed="false" class="pay-method flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl border text-xs font-bold transition-colors focus:outline-none focus:ring-2 focus:ring-vino">
+                            <i class="fa-solid fa-credit-card"></i> Tarjeta
+                        </button>
+                        <button type="button" data-pay="transferencia" aria-pressed="false" class="pay-method flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl border text-xs font-bold transition-colors focus:outline-none focus:ring-2 focus:ring-vino">
+                            <i class="fa-solid fa-building-columns"></i> Transferencia
+                        </button>
+                        <button type="button" data-pay="taller" aria-pressed="false" class="pay-method flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl border text-xs font-bold transition-colors focus:outline-none focus:ring-2 focus:ring-vino">
+                            <i class="fa-solid fa-store"></i> Pago en taller
+                        </button>
+                    </div>
+                    <p id="err-checkout-payment" class="text-[11px] font-semibold text-vino hidden" role="alert"></p>
+
+                    <!-- Panel Yape -->
+                    <div data-pay-panel="yape" class="rounded-2xl border border-crema-border bg-white p-4 space-y-3">
+                        <div class="flex flex-col sm:flex-row items-center gap-4">
+                            <div class="shrink-0 rounded-xl bg-white p-2 border border-crema-border" data-qr="yape"></div>
+                            <div class="text-center sm:text-left space-y-1">
+                                <p class="text-xs font-bold text-negro">Yape (demostración)</p>
+                                <p class="text-[10px] font-bold uppercase tracking-wider text-negro-muted">Número de demostración</p>
+                                <p class="font-serif text-xl font-extrabold text-vino">987 654 321</p>
+                                <p class="text-[11px] text-negro-muted">Titular: Cueros &amp; Afines</p>
+                            </div>
+                        </div>
+                        <p class="text-[10px] text-negro-muted">Escanea el QR de ejemplo o usa el número. No se procesará ningún cobro.</p>
+                    </div>
+
+                    <!-- Panel Plin -->
+                    <div data-pay-panel="plin" class="hidden rounded-2xl border border-crema-border bg-white p-4 space-y-3">
+                        <div class="flex flex-col sm:flex-row items-center gap-4">
+                            <div class="shrink-0 rounded-xl bg-white p-2 border border-crema-border" data-qr="plin"></div>
+                            <div class="text-center sm:text-left space-y-1">
+                                <p class="text-xs font-bold text-negro">Plin (demostración)</p>
+                                <p class="text-[10px] font-bold uppercase tracking-wider text-negro-muted">Número de demostración</p>
+                                <p class="font-serif text-xl font-extrabold text-vino">912 345 678</p>
+                                <p class="text-[11px] text-negro-muted">Titular: Cueros &amp; Afines</p>
+                            </div>
+                        </div>
+                        <p class="text-[10px] text-negro-muted">Escanea el QR de ejemplo o usa el número. No se procesará ningún cobro.</p>
+                    </div>
+
+                    <!-- Panel Tarjeta -->
+                    <div data-pay-panel="tarjeta" class="hidden rounded-2xl border border-crema-border bg-white p-4 space-y-3">
+                        <p class="text-[10px] font-bold uppercase tracking-wider text-vino">Datos de prueba: no se envían ni se guardan</p>
+                        <div>
+                            <label for="card-number" class="block text-[10px] font-extrabold uppercase tracking-wider text-negro mb-1">Número de tarjeta</label>
+                            <input id="card-number" type="text" inputmode="numeric" autocomplete="off" maxlength="19" placeholder="1234 5678 9012 3456"
+                                class="w-full px-3 py-2.5 rounded-xl bg-white border border-crema-border text-negro text-xs font-bold focus:outline-none focus:ring-2 focus:ring-vino"
+                                aria-describedby="err-card-number">
+                            <p id="err-card-number" class="mt-1 text-[11px] font-semibold text-vino hidden" role="alert"></p>
+                        </div>
+                        <div>
+                            <label for="card-name" class="block text-[10px] font-extrabold uppercase tracking-wider text-negro mb-1">Titular de la tarjeta</label>
+                            <input id="card-name" type="text" autocomplete="off" placeholder="Como figura en la tarjeta"
+                                class="w-full px-3 py-2.5 rounded-xl bg-white border border-crema-border text-negro text-xs font-bold focus:outline-none focus:ring-2 focus:ring-vino"
+                                aria-describedby="err-card-name">
+                            <p id="err-card-name" class="mt-1 text-[11px] font-semibold text-vino hidden" role="alert"></p>
+                        </div>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label for="card-expiry" class="block text-[10px] font-extrabold uppercase tracking-wider text-negro mb-1">Vencimiento (MM/AA)</label>
+                                <input id="card-expiry" type="text" inputmode="numeric" autocomplete="off" maxlength="5" placeholder="MM/AA"
+                                    class="w-full px-3 py-2.5 rounded-xl bg-white border border-crema-border text-negro text-xs font-bold focus:outline-none focus:ring-2 focus:ring-vino"
+                                    aria-describedby="err-card-expiry">
+                                <p id="err-card-expiry" class="mt-1 text-[11px] font-semibold text-vino hidden" role="alert"></p>
+                            </div>
+                            <div>
+                                <label for="card-cvv" class="block text-[10px] font-extrabold uppercase tracking-wider text-negro mb-1">CVV</label>
+                                <input id="card-cvv" type="password" inputmode="numeric" autocomplete="off" maxlength="4" placeholder="123"
+                                    class="w-full px-3 py-2.5 rounded-xl bg-white border border-crema-border text-negro text-xs font-bold focus:outline-none focus:ring-2 focus:ring-vino"
+                                    aria-describedby="err-card-cvv">
+                                <p id="err-card-cvv" class="mt-1 text-[11px] font-semibold text-vino hidden" role="alert"></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Panel Transferencia -->
+                    <div data-pay-panel="transferencia" class="hidden rounded-2xl border border-crema-border bg-white p-4 space-y-3">
+                        <p class="text-xs font-bold text-negro">Datos para transferencia (ejemplo)</p>
+                        <dl class="space-y-1.5 text-[11px]">
+                            <div class="flex justify-between gap-3 border-b border-crema-border pb-1"><dt class="font-bold text-negro-muted">Banco</dt><dd class="font-bold text-negro text-right">BCP</dd></div>
+                            <div class="flex justify-between gap-3 border-b border-crema-border pb-1"><dt class="font-bold text-negro-muted">Titular</dt><dd class="font-bold text-negro text-right">Cueros &amp; Afines S.A.C.</dd></div>
+                            <div class="flex justify-between gap-3 border-b border-crema-border pb-1"><dt class="font-bold text-negro-muted">RUC</dt><dd class="font-bold text-negro text-right">20123456789</dd></div>
+                            <div class="flex justify-between gap-3 border-b border-crema-border pb-1"><dt class="font-bold text-negro-muted">Cuenta soles</dt><dd class="font-bold text-negro text-right">193-1234567-0-12</dd></div>
+                            <div class="flex justify-between gap-3"><dt class="font-bold text-negro-muted">CCI</dt><dd class="font-bold text-negro text-right">002-193-001234567012-15</dd></div>
+                        </dl>
+                        <p class="text-[10px] text-negro-muted">Envía tu comprobante por WhatsApp después de confirmar. No se verificará ningún pago real.</p>
+                    </div>
+
+                    <!-- Panel Pago en taller -->
+                    <div data-pay-panel="taller" class="hidden rounded-2xl border border-crema-border bg-white p-4 space-y-2">
+                        <p class="text-xs font-bold text-negro">Pago en taller (demostración)</p>
+                        <p class="text-[11px] text-negro-muted">Av. Larco 123, Miraflores, Lima. Lunes a sábado, de 10:00 a 19:00.</p>
+                        <p class="text-[11px] text-negro-muted">Reserva tu pedido y paga al recogerlo. No se solicita pago por adelantado.</p>
+                    </div>
+                </div>
+
+                <!-- Paso 3: Confirmación -->
+                <div id="checkout-step-3" class="hidden space-y-4 text-center">
+                    <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-vino text-dorado text-3xl shadow-lg">
+                        <i class="fa-solid fa-circle-check"></i>
+                    </div>
+                    <div class="space-y-1">
+                        <h4 id="checkout-step-3-title" tabindex="-1" class="font-serif text-2xl font-bold text-negro focus:outline-none">¡Pedido registrado!</h4>
+                        <p class="text-[11px] text-negro-muted">Este es un pedido de demostración: no se realizó ningún cobro.</p>
+                    </div>
+                    <div class="rounded-2xl border border-dorado bg-dorado/10 px-4 py-3">
+                        <p class="text-[10px] font-extrabold uppercase tracking-wider text-negro-muted">Número de pedido</p>
+                        <p id="checkout-order-number" class="font-serif text-2xl font-extrabold text-vino">CA-2026-0000</p>
+                    </div>
+                    <div id="checkout-final-details" class="text-left text-[11px] text-negro-muted space-y-1"></div>
+                    <button id="btn-checkout-whatsapp" type="button" class="w-full py-3.5 bg-green-600 hover:bg-green-700 text-white font-bold text-xs uppercase tracking-wider rounded-xl shadow-lg transition-colors flex items-center justify-center gap-2 focus:outline-none focus:ring-2 focus:ring-vino focus:ring-offset-2">
+                        <i class="fa-brands fa-whatsapp text-lg"></i> Enviar detalle por WhatsApp
+                    </button>
+                    <p class="text-[10px] text-negro-muted">El mensaje incluye tu número de pedido y el resumen. No incluye datos de tarjeta.</p>
+                </div>
+            </div>
+
+            <!-- Navegación -->
+            <div class="px-5 sm:px-6 py-4 bg-white border-t border-crema-border flex items-center justify-between gap-3 shrink-0">
+                <button id="btn-checkout-back" type="button" class="hidden px-4 py-2.5 rounded-xl border border-crema-border text-negro text-xs font-bold hover:bg-crema focus:outline-none focus:ring-2 focus:ring-vino">
+                    <i class="fa-solid fa-arrow-left mr-1"></i> Atrás
+                </button>
+                <button id="btn-checkout-next" type="button" class="ml-auto px-5 py-2.5 rounded-xl bg-vino hover:bg-vino-light text-white text-xs font-bold uppercase tracking-wider shadow-lg transition-colors focus:outline-none focus:ring-2 focus:ring-vino focus:ring-offset-2">
+                    Continuar <i class="fa-solid fa-arrow-right ml-1"></i>
+                </button>
             </div>
         </div>
     </div>
@@ -1018,10 +1239,21 @@
             provincias: { label: 'Provincias', cost: 25 }
         };
 
+        const PAYMENT_METHODS = {
+            yape: { label: 'Yape (simulado)' },
+            plin: { label: 'Plin (simulado)' },
+            tarjeta: { label: 'Tarjeta (simulada)' },
+            transferencia: { label: 'Transferencia bancaria (simulada)' },
+            taller: { label: 'Pago en taller (simulado)' }
+        };
+
         const FREE_SHIPPING_LIMA = 250;
         const CART_STORAGE_KEY = 'cuerosAfinesCotizacion';
         let appliedCoupon = null;
         let deliveryMethod = 'recojo';
+        let checkoutStep = 1;
+        let checkoutPaymentMethod = 'yape';
+        let checkoutOrder = null;
 
         // ELEMENTOS DOM
         const productGrid = document.getElementById('product-grid');
@@ -1043,6 +1275,36 @@
         const freeShipBar = document.getElementById('free-ship-bar');
         const freeShipHint = document.getElementById('free-ship-hint');
         const freeShipProgress = document.getElementById('free-ship-progress');
+        const checkoutModal = document.getElementById('checkout-modal');
+        const checkoutBody = document.getElementById('checkout-body');
+        const checkoutSummary = document.getElementById('checkout-summary');
+        const checkoutStep1 = document.getElementById('checkout-step-1');
+        const checkoutStep2 = document.getElementById('checkout-step-2');
+        const checkoutStep3 = document.getElementById('checkout-step-3');
+        const checkoutProgress = document.getElementById('checkout-progress');
+        const checkoutProgressBar = document.getElementById('checkout-progress-bar');
+        const checkoutStepLabels = document.querySelectorAll('[data-checkout-step-label]');
+        const checkoutStep3Title = document.getElementById('checkout-step-3-title');
+        const checkoutDeliveryLabel = document.getElementById('checkout-delivery-label');
+        const checkoutAddressWrap = document.getElementById('checkout-address-wrap');
+        const checkoutName = document.getElementById('checkout-name');
+        const checkoutPhone = document.getElementById('checkout-phone');
+        const checkoutEmail = document.getElementById('checkout-email');
+        const checkoutAddress = document.getElementById('checkout-address');
+        const cardNumber = document.getElementById('card-number');
+        const cardName = document.getElementById('card-name');
+        const cardExpiry = document.getElementById('card-expiry');
+        const cardCvv = document.getElementById('card-cvv');
+        const checkoutPaymentError = document.getElementById('err-checkout-payment');
+        const checkoutOrderNumber = document.getElementById('checkout-order-number');
+        const checkoutFinalDetails = document.getElementById('checkout-final-details');
+        const paymentMethodButtons = document.querySelectorAll('#checkout-payment-methods [data-pay]');
+        const paymentPanels = document.querySelectorAll('[data-pay-panel]');
+        const btnCheckout = document.getElementById('btn-checkout');
+        const btnCheckoutClose = document.getElementById('btn-close-checkout');
+        const btnCheckoutNext = document.getElementById('btn-checkout-next');
+        const btnCheckoutBack = document.getElementById('btn-checkout-back');
+        const btnCheckoutWhatsapp = document.getElementById('btn-checkout-whatsapp');
         const quickviewModal = document.getElementById('quickview-modal');
         const modalBody = document.getElementById('modal-body');
 
@@ -1053,6 +1315,7 @@
             setupMonogramEvents();
             setupChristmasOfferModal();
             setupCartEvents();
+            setupCheckoutEvents();
             loadCartState();
             updateCartUI();
         });
@@ -1597,12 +1860,450 @@
                 updateCartUI();
             });
 
-            // Escape cierra el panel del carrito
+            // Escape cierra el panel del carrito (si el checkout no está abierto)
             document.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape' && !cartDrawer.classList.contains('hidden')) {
+                if (e.key === 'Escape' && !cartDrawer.classList.contains('hidden') && checkoutModal.classList.contains('hidden')) {
                     cartDrawer.classList.add('hidden');
                 }
             });
+        }
+
+        // CHECKOUT SIMULADO: DATOS, PAGO Y CONFIRMACIÓN
+        function normalizePhone(value) {
+            let digits = String(value || '').replace(/\D/g, '');
+            if (digits.length === 11 && digits.startsWith('51')) digits = digits.slice(2);
+            return digits;
+        }
+
+        function escapeHtml(value) {
+            return String(value).replace(/[&<>"']/g, (char) => ({
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#39;'
+            }[char]));
+        }
+
+        function isExpiredCardExpiry(expiry) {
+            const [month, year] = expiry.split('/').map(Number);
+            const now = new Date();
+            const expYear = 2000 + year;
+            return expYear < now.getFullYear() || (expYear === now.getFullYear() && month < now.getMonth() + 1);
+        }
+
+        function setCheckoutFieldError(inputId, message) {
+            const input = document.getElementById(inputId);
+            const error = document.getElementById(`err-${inputId}`);
+            if (!input || !error) return;
+
+            error.textContent = message || '';
+            error.classList.toggle('hidden', !message);
+
+            if (message) input.setAttribute('aria-invalid', 'true');
+            else input.removeAttribute('aria-invalid');
+        }
+
+        function setCheckoutPaymentError(message) {
+            checkoutPaymentError.textContent = message || '';
+            checkoutPaymentError.classList.toggle('hidden', !message);
+        }
+
+        function clearCheckoutErrors() {
+            ['checkout-name', 'checkout-phone', 'checkout-email', 'checkout-address', 'card-number', 'card-name', 'card-expiry', 'card-cvv']
+                .forEach(id => setCheckoutFieldError(id, ''));
+            setCheckoutPaymentError('');
+        }
+
+        function clearCardFields() {
+            cardNumber.value = '';
+            cardName.value = '';
+            cardExpiry.value = '';
+            cardCvv.value = '';
+        }
+
+        function setCheckoutPaymentMethod(method) {
+            checkoutPaymentMethod = method;
+
+            paymentMethodButtons.forEach(btn => {
+                const active = btn.dataset.pay === method;
+                btn.setAttribute('aria-pressed', active ? 'true' : 'false');
+                btn.classList.toggle('bg-vino', active);
+                btn.classList.toggle('text-white', active);
+                btn.classList.toggle('border-vino', active);
+                btn.classList.toggle('bg-white', !active);
+                btn.classList.toggle('text-negro', !active);
+                btn.classList.toggle('border-crema-border', !active);
+                btn.classList.toggle('hover:border-vino', !active);
+            });
+
+            paymentPanels.forEach(panel => {
+                panel.classList.toggle('hidden', panel.dataset.payPanel !== method);
+            });
+
+            setCheckoutPaymentError('');
+        }
+
+        function renderCheckoutSummary() {
+            const subtotal = getCartSubtotal();
+            const discount = getDiscount();
+            const shipping = getShippingCost();
+            const total = Math.max(0, subtotal - discount + shipping);
+            const coupon = getAppliedCoupon();
+            const delivery = DELIVERY_OPTIONS[deliveryMethod] || DELIVERY_OPTIONS.recojo;
+            const count = getCartQuantity();
+
+            checkoutSummary.innerHTML = `
+                <div class="flex items-center justify-between gap-2 mb-2">
+                    <p class="text-[10px] font-extrabold uppercase tracking-wider text-negro">Resumen del pedido</p>
+                    <span class="text-[10px] font-bold text-negro-muted">${count} ${count === 1 ? 'artículo' : 'artículos'}</span>
+                </div>
+                <div class="space-y-1 text-xs font-bold">
+                    <div class="flex justify-between text-negro-muted"><span>Subtotal</span><span>S/. ${subtotal.toFixed(2)}</span></div>
+                    <div class="flex justify-between"><span class="text-negro-muted">Cupón</span><span class="${coupon ? 'text-vino' : 'text-negro-muted'}">${coupon ? coupon.code : 'Ninguno'}</span></div>
+                    <div class="flex justify-between"><span class="text-negro-muted">Descuento</span><span class="text-vino">− S/. ${discount.toFixed(2)}</span></div>
+                    <div class="flex justify-between text-negro-muted"><span>Envío (${delivery.label})</span><span>S/. ${shipping.toFixed(2)}</span></div>
+                    <div class="flex justify-between items-center pt-1.5 border-t border-crema-border"><span class="text-xs font-extrabold uppercase text-negro">Total</span><span class="font-serif text-xl font-extrabold text-vino">S/. ${total.toFixed(2)}</span></div>
+                </div>
+            `;
+        }
+
+        function updateCheckoutStepUI() {
+            checkoutStep1.classList.toggle('hidden', checkoutStep !== 1);
+            checkoutStep2.classList.toggle('hidden', checkoutStep !== 2);
+            checkoutStep3.classList.toggle('hidden', checkoutStep !== 3);
+
+            checkoutProgressBar.style.width = `${(checkoutStep / 3) * 100}%`;
+            checkoutProgress.setAttribute('aria-valuenow', String(checkoutStep));
+
+            checkoutStepLabels.forEach(label => {
+                const step = parseInt(label.dataset.checkoutStepLabel, 10);
+                label.classList.toggle('text-vino', step <= checkoutStep);
+                label.classList.toggle('text-negro-muted', step > checkoutStep);
+                if (step === checkoutStep) label.setAttribute('aria-current', 'step');
+                else label.removeAttribute('aria-current');
+            });
+
+            btnCheckoutBack.classList.toggle('hidden', checkoutStep !== 2);
+
+            if (checkoutStep === 1) {
+                btnCheckoutNext.innerHTML = 'Continuar <i class="fa-solid fa-arrow-right ml-1"></i>';
+            } else if (checkoutStep === 2) {
+                btnCheckoutNext.innerHTML = 'Finalizar pedido <i class="fa-solid fa-lock ml-1"></i>';
+            } else {
+                btnCheckoutNext.innerHTML = 'Cerrar <i class="fa-solid fa-xmark ml-1"></i>';
+            }
+
+            checkoutBody.scrollTop = 0;
+
+            if (checkoutStep === 1) {
+                checkoutName.focus();
+            } else if (checkoutStep === 2) {
+                const selected = document.querySelector('#checkout-payment-methods [data-pay][aria-pressed="true"]');
+                (selected || document.querySelector('#checkout-payment-methods [data-pay]')).focus();
+            } else {
+                checkoutStep3Title.focus();
+            }
+        }
+
+        function openCheckout() {
+            if (quoteCart.length === 0) {
+                showToast('Añade artículos a tu cotización primero.');
+                return;
+            }
+
+            checkoutStep = 1;
+            checkoutOrder = null;
+            clearCheckoutErrors();
+            clearCardFields();
+
+            const delivery = DELIVERY_OPTIONS[deliveryMethod] || DELIVERY_OPTIONS.recojo;
+            checkoutDeliveryLabel.textContent = `Entrega: ${delivery.label}`;
+            checkoutAddressWrap.classList.toggle('hidden', deliveryMethod === 'recojo');
+
+            renderCheckoutSummary();
+            setCheckoutPaymentMethod('yape');
+            updateCheckoutStepUI();
+
+            checkoutModal.classList.remove('hidden');
+            checkoutName.focus();
+        }
+
+        function closeCheckout() {
+            checkoutModal.classList.add('hidden');
+            clearCardFields();
+            btnCheckout.focus();
+        }
+
+        function validateCheckoutStep1() {
+            const name = checkoutName.value.trim();
+            const phone = normalizePhone(checkoutPhone.value);
+            const email = checkoutEmail.value.trim();
+            const address = checkoutAddress.value.trim();
+            let firstInvalid = null;
+
+            if (name.length < 3) {
+                setCheckoutFieldError('checkout-name', 'Ingresa tu nombre completo (mínimo 3 caracteres).');
+                firstInvalid = firstInvalid || checkoutName;
+            } else setCheckoutFieldError('checkout-name', '');
+
+            if (!/^9\d{8}$/.test(phone)) {
+                setCheckoutFieldError('checkout-phone', 'Ingresa un celular peruano de 9 dígitos (empieza con 9).');
+                firstInvalid = firstInvalid || checkoutPhone;
+            } else setCheckoutFieldError('checkout-phone', '');
+
+            if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) {
+                setCheckoutFieldError('checkout-email', 'Ingresa un correo válido o déjalo vacío.');
+                firstInvalid = firstInvalid || checkoutEmail;
+            } else setCheckoutFieldError('checkout-email', '');
+
+            if (deliveryMethod !== 'recojo' && address.length < 6) {
+                setCheckoutFieldError('checkout-address', 'Ingresa la dirección de entrega (calle, número y distrito).');
+                firstInvalid = firstInvalid || checkoutAddress;
+            } else setCheckoutFieldError('checkout-address', '');
+
+            if (firstInvalid) {
+                firstInvalid.focus();
+                return false;
+            }
+            return true;
+        }
+
+        function validateCheckoutPayment() {
+            if (checkoutPaymentMethod !== 'tarjeta') return true;
+
+            const digits = cardNumber.value.replace(/\D/g, '');
+            const holder = cardName.value.trim();
+            const expiry = cardExpiry.value.trim();
+            const cvv = cardCvv.value.trim();
+            let firstInvalid = null;
+
+            if (digits.length !== 16) {
+                setCheckoutFieldError('card-number', 'Ingresa los 16 dígitos de la tarjeta.');
+                firstInvalid = firstInvalid || cardNumber;
+            } else setCheckoutFieldError('card-number', '');
+
+            if (holder.length < 3) {
+                setCheckoutFieldError('card-name', 'Ingresa el nombre del titular.');
+                firstInvalid = firstInvalid || cardName;
+            } else setCheckoutFieldError('card-name', '');
+
+            if (!/^(0[1-9]|1[0-2])\/\d{2}$/.test(expiry)) {
+                setCheckoutFieldError('card-expiry', 'Usa el formato MM/AA.');
+                firstInvalid = firstInvalid || cardExpiry;
+            } else if (isExpiredCardExpiry(expiry)) {
+                setCheckoutFieldError('card-expiry', 'La tarjeta está vencida.');
+                firstInvalid = firstInvalid || cardExpiry;
+            } else setCheckoutFieldError('card-expiry', '');
+
+            if (!/^\d{3,4}$/.test(cvv)) {
+                setCheckoutFieldError('card-cvv', 'Ingresa un CVV de 3 o 4 dígitos.');
+                firstInvalid = firstInvalid || cardCvv;
+            } else setCheckoutFieldError('card-cvv', '');
+
+            if (firstInvalid) {
+                firstInvalid.focus();
+                return false;
+            }
+            return true;
+        }
+
+        function createCheckoutOrder() {
+            const subtotal = getCartSubtotal();
+            const discount = getDiscount();
+            const shipping = getShippingCost();
+            const total = Math.max(0, subtotal - discount + shipping);
+            const delivery = DELIVERY_OPTIONS[deliveryMethod] || DELIVERY_OPTIONS.recojo;
+            const payment = PAYMENT_METHODS[checkoutPaymentMethod] || PAYMENT_METHODS.yape;
+
+            checkoutOrder = {
+                number: `CA-${new Date().getFullYear()}-${Math.floor(1000 + Math.random() * 9000)}`,
+                name: checkoutName.value.trim(),
+                phone: normalizePhone(checkoutPhone.value),
+                email: checkoutEmail.value.trim(),
+                address: checkoutAddress.value.trim(),
+                deliveryLabel: delivery.label,
+                paymentLabel: payment.label,
+                coupon: appliedCoupon,
+                subtotal,
+                discount,
+                shipping,
+                total
+            };
+
+            checkoutOrderNumber.textContent = checkoutOrder.number;
+            checkoutFinalDetails.innerHTML = `
+                <p><span class="font-bold text-negro">Cliente:</span> ${escapeHtml(checkoutOrder.name)}</p>
+                <p><span class="font-bold text-negro">Celular:</span> ${escapeHtml(checkoutOrder.phone)}</p>
+                ${checkoutOrder.email ? `<p><span class="font-bold text-negro">Correo:</span> ${escapeHtml(checkoutOrder.email)}</p>` : ''}
+                ${checkoutOrder.address ? `<p><span class="font-bold text-negro">Dirección:</span> ${escapeHtml(checkoutOrder.address)}</p>` : ''}
+                <p><span class="font-bold text-negro">Entrega:</span> ${checkoutOrder.deliveryLabel}</p>
+                <p><span class="font-bold text-negro">Pago:</span> ${checkoutOrder.paymentLabel}</p>
+            `;
+
+            // Los datos de tarjeta se descartan de inmediato: nunca se guardan ni se envían.
+            clearCardFields();
+        }
+
+        function handleCheckoutNext() {
+            if (checkoutStep === 1) {
+                if (!validateCheckoutStep1()) return;
+                checkoutStep = 2;
+                updateCheckoutStepUI();
+                return;
+            }
+
+            if (checkoutStep === 2) {
+                if (!validateCheckoutPayment()) return;
+                createCheckoutOrder();
+                checkoutStep = 3;
+                updateCheckoutStepUI();
+                return;
+            }
+
+            closeCheckout();
+        }
+
+        function handleCheckoutBack() {
+            if (checkoutStep === 2) {
+                checkoutStep = 1;
+                updateCheckoutStepUI();
+            }
+        }
+
+        function sendCheckoutWhatsApp() {
+            if (!checkoutOrder) return;
+
+            let msg = `Hola Cueros & Afines, deseo confirmar mi pedido *${checkoutOrder.number}* (demostración):\n\n`;
+            quoteCart.forEach((item, index) => {
+                msg += `${index + 1}. *${item.name}* x${item.qty} = S/. ${(item.price * item.qty).toFixed(2)}\n`;
+            });
+            msg += `\n*Subtotal:* S/. ${checkoutOrder.subtotal.toFixed(2)}\n`;
+            msg += `*Cupón:* ${checkoutOrder.coupon ? `${checkoutOrder.coupon} (− S/. ${checkoutOrder.discount.toFixed(2)})` : 'Ninguno'}\n`;
+            msg += `*Envío (${checkoutOrder.deliveryLabel}):* S/. ${checkoutOrder.shipping.toFixed(2)}\n`;
+            msg += `*Total:* S/. ${checkoutOrder.total.toFixed(2)}\n\n`;
+            msg += `*Cliente:* ${checkoutOrder.name} · ${checkoutOrder.phone}\n`;
+            if (checkoutOrder.email) msg += `*Correo:* ${checkoutOrder.email}\n`;
+            if (checkoutOrder.address) msg += `*Dirección:* ${checkoutOrder.address}\n`;
+            msg += `*Pago:* ${checkoutOrder.paymentLabel}\n\n`;
+            msg += 'Pedido de demostración: no se realizó ningún cobro real.';
+
+            window.open(`https://wa.me/51987654321?text=${encodeURIComponent(msg)}`, '_blank');
+        }
+
+        function renderDemoQr(container, seed) {
+            if (!container || container.dataset.rendered === 'true') return;
+
+            const size = 21;
+            const cell = 6;
+            let state = seed;
+            const random = () => {
+                state = (state * 1103515245 + 12345) & 0x7fffffff;
+                return state / 0x7fffffff;
+            };
+            const inFinder = (x, y) => (x < 7 && y < 7) || (x >= 14 && y < 7) || (x < 7 && y >= 14);
+
+            let svg = `<svg viewBox="0 0 ${size * cell} ${size * cell}" width="112" height="112" role="img" aria-label="Código QR de ejemplo">`;
+            svg += '<rect width="100%" height="100%" fill="#ffffff"></rect>';
+
+            for (let y = 0; y < size; y++) {
+                for (let x = 0; x < size; x++) {
+                    if (inFinder(x, y)) continue;
+                    if (random() > 0.55) {
+                        svg += `<rect x="${x * cell}" y="${y * cell}" width="${cell}" height="${cell}" fill="#111111"></rect>`;
+                    }
+                }
+            }
+
+            [[0, 0], [14, 0], [0, 14]].forEach(([fx, fy]) => {
+                svg += `<rect x="${fx * cell}" y="${fy * cell}" width="${7 * cell}" height="${7 * cell}" fill="#111111"></rect>`;
+                svg += `<rect x="${(fx + 1) * cell}" y="${(fy + 1) * cell}" width="${5 * cell}" height="${5 * cell}" fill="#ffffff"></rect>`;
+                svg += `<rect x="${(fx + 2) * cell}" y="${(fy + 2) * cell}" width="${3 * cell}" height="${3 * cell}" fill="#111111"></rect>`;
+            });
+
+            svg += '</svg>';
+            container.innerHTML = svg;
+            container.dataset.rendered = 'true';
+        }
+
+        function setupCheckoutEvents() {
+            btnCheckout.addEventListener('click', openCheckout);
+            btnCheckoutClose.addEventListener('click', closeCheckout);
+            btnCheckoutNext.addEventListener('click', handleCheckoutNext);
+            btnCheckoutBack.addEventListener('click', handleCheckoutBack);
+            btnCheckoutWhatsapp.addEventListener('click', sendCheckoutWhatsApp);
+
+            checkoutStep1.addEventListener('submit', (e) => {
+                e.preventDefault();
+                handleCheckoutNext();
+            });
+
+            checkoutStep2.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' && e.target.tagName === 'INPUT') {
+                    e.preventDefault();
+                    handleCheckoutNext();
+                }
+            });
+
+            paymentMethodButtons.forEach(btn => {
+                btn.addEventListener('click', () => setCheckoutPaymentMethod(btn.dataset.pay));
+            });
+
+            cardNumber.addEventListener('input', () => {
+                const digits = cardNumber.value.replace(/\D/g, '').slice(0, 16);
+                cardNumber.value = digits.replace(/(\d{4})(?=\d)/g, '$1 ');
+            });
+
+            cardExpiry.addEventListener('input', () => {
+                let digits = cardExpiry.value.replace(/\D/g, '').slice(0, 4);
+                if (digits.length >= 3) digits = `${digits.slice(0, 2)}/${digits.slice(2)}`;
+                cardExpiry.value = digits;
+            });
+
+            cardCvv.addEventListener('input', () => {
+                cardCvv.value = cardCvv.value.replace(/\D/g, '').slice(0, 4);
+            });
+
+            // Al escribir, se limpia el mensaje de error del campo correspondiente.
+            ['checkout-name', 'checkout-phone', 'checkout-email', 'checkout-address', 'card-number', 'card-name', 'card-expiry', 'card-cvv']
+                .forEach(id => {
+                    const input = document.getElementById(id);
+                    input.addEventListener('input', () => setCheckoutFieldError(id, ''));
+                });
+
+            checkoutModal.addEventListener('click', (e) => {
+                if (e.target === checkoutModal) closeCheckout();
+            });
+
+            // Escape cierra el checkout; Tab se mantiene dentro del modal.
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && !checkoutModal.classList.contains('hidden')) {
+                    closeCheckout();
+                }
+            });
+
+            checkoutModal.addEventListener('keydown', (e) => {
+                if (e.key !== 'Tab') return;
+
+                const focusables = Array.from(checkoutModal.querySelectorAll('button:not([disabled]), input:not([disabled]), select:not([disabled]), a[href]'))
+                    .filter(el => el.offsetParent !== null);
+
+                if (!focusables.length) return;
+
+                const first = focusables[0];
+                const last = focusables[focusables.length - 1];
+
+                if (e.shiftKey && document.activeElement === first) {
+                    e.preventDefault();
+                    last.focus();
+                } else if (!e.shiftKey && document.activeElement === last) {
+                    e.preventDefault();
+                    first.focus();
+                }
+            });
+
+            renderDemoQr(document.querySelector('[data-qr="yape"]'), 2026);
+            renderDemoQr(document.querySelector('[data-qr="plin"]'), 777);
         }
 
         // VISTA RÁPIDA EN MODAL
