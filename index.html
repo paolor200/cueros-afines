@@ -137,8 +137,8 @@
                 
                 <!-- Logo -->
                 <a href="#" class="flex items-center gap-3 group">
-                    <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-dorado to-dorado-dark flex items-center justify-center text-vino-dark shadow-lg shadow-dorado/20 group-hover:scale-105 transition-transform">
-                        <i class="fa-solid fa-crown text-xl"></i>
+                    <div class="w-11 h-11 rounded-full border-2 border-dorado/50 bg-vino-dark flex items-center justify-center shadow-lg shadow-dorado/20 group-hover:scale-105 transition-transform">
+                        <span class="font-serif text-lg font-bold text-dorado tracking-widest">CA</span>
                     </div>
                     <div>
                         <span class="font-serif text-2xl font-bold tracking-tight text-white block leading-none">
@@ -192,7 +192,7 @@
                     
                     <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
                         <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-crema/10 border border-dorado/40 text-dorado text-xs font-bold uppercase tracking-widest shadow-md">
-                            <i class="fa-solid fa-gem text-dorado"></i> Taller Artesanal de Marroquinería
+                            <i class="fa-solid fa-scissors text-dorado"></i> Taller Artesanal de Marroquinería
                         </div>
 
                         <h1 class="font-serif text-4xl sm:text-5xl lg:text-6xl font-bold text-white tracking-tight leading-tight">
@@ -204,27 +204,22 @@
                             <p class="text-negro font-medium text-base sm:text-lg leading-relaxed">
                                 Especialistas en la confección de <strong>carteras, mochilas, calzado, correas, billeteras, morrales y monederos</strong>. Diseños para <strong>Dama y Caballero</strong> combinando la resistencia del cuero vacuno legítimo con finas telas textiles seleccionadas.
                             </p>
-                            <div class="flex flex-wrap items-center justify-center lg:justify-start gap-4 pt-2">
-                                <a href="#catalogo" class="px-6 py-3 rounded-xl bg-negro text-white font-bold text-xs uppercase tracking-wider hover:bg-vino transition-colors shadow-md flex items-center gap-2">
-                                    <i class="fa-solid fa-layer-group text-dorado"></i> Explorar Catálogo
-                                </a>
-                                <a href="#cotizador" class="px-6 py-3 rounded-xl bg-vino text-white font-bold text-xs uppercase tracking-wider border border-dorado hover:bg-vino-light transition-colors shadow-md flex items-center gap-2">
-                                    <i class="fa-solid fa-calculator text-dorado"></i> Cotizar Pedido
-                                </a>
-                            </div>
                         </div>
 
                         <!-- Stats / Badges -->
                         <div class="grid grid-cols-3 gap-4 pt-2 text-center max-w-lg mx-auto lg:mx-0">
-                            <div class="p-3 rounded-xl bg-vino-dark/80 border border-dorado/30">
+                            <div class="p-3 rounded-2xl bg-vino-dark/80 border border-dorado/30 flex flex-col items-center gap-2">
+                                <i class="fa-solid fa-shield-halved text-dorado text-lg"></i>
                                 <span class="block text-2xl font-serif font-bold text-dorado">100%</span>
                                 <span class="text-xs text-crema-accent">Cuero Legítimo</span>
                             </div>
-                            <div class="p-3 rounded-xl bg-vino-dark/80 border border-dorado/30">
+                            <div class="p-3 rounded-2xl bg-vino-dark/80 border border-dorado/30 flex flex-col items-center gap-2">
+                                <i class="fa-solid fa-venus-mars text-dorado text-lg"></i>
                                 <span class="block text-2xl font-serif font-bold text-dorado">Dama &</span>
                                 <span class="text-xs text-crema-accent">Caballero</span>
                             </div>
-                            <div class="p-3 rounded-xl bg-vino-dark/80 border border-dorado/30">
+                            <div class="p-3 rounded-2xl bg-vino-dark/80 border border-dorado/30 flex flex-col items-center gap-2">
+                                <i class="fa-solid fa-layer-group text-dorado text-lg"></i>
                                 <span class="block text-2xl font-serif font-bold text-dorado">Textil+</span>
                                 <span class="text-xs text-crema-accent">Cuero Fusiones</span>
                             </div>
@@ -251,6 +246,14 @@
                                         <i class="fa-solid fa-award"></i>
                                     </span>
                                 </div>
+                            </div>
+                            <div class="mt-4 flex flex-wrap items-center justify-center gap-3">
+                                <a href="#catalogo" class="px-6 py-3 rounded-xl bg-dorado text-vino-dark font-bold text-xs uppercase tracking-wider hover:bg-vino hover:text-white transition-colors shadow-md flex items-center gap-2">
+                                    <i class="fa-solid fa-compass"></i> Explorar Catálogo
+                                </a>
+                                <a href="#cotizador" class="px-6 py-3 rounded-xl bg-vino text-white font-bold text-xs uppercase tracking-wider border border-dorado hover:bg-vino-light transition-colors shadow-md flex items-center gap-2">
+                                    <i class="fa-solid fa-calculator text-dorado"></i> Cotizar Pedido
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -591,7 +594,7 @@
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
                     
-                    <div class="lg:col-span-5 space-y-6">
+                    <div class="lg:col-span-5 space-y-6" style="order:2">
                         <div>
                             <span class="text-xs font-bold uppercase tracking-widest text-dorado bg-vino px-3 py-1 rounded-full border border-dorado/30">Ubicación y Pedidos</span>
                             <h2 class="font-serif text-3xl font-bold text-white mt-2">Visita Nuestro Taller</h2>
@@ -602,8 +605,8 @@
 
                         <!-- Tarjetas de información de contacto (Crema con Texto Negro) -->
                         <div class="space-y-4">
-                            <div class="card-cream p-4 rounded-xl flex items-start gap-4">
-                                <div class="w-10 h-10 rounded-lg bg-vino text-dorado flex items-center justify-center shrink-0 font-bold">
+                            <div class="card-cream card-cream-hover p-4 rounded-xl flex items-start gap-4 transition-all duration-300">
+                                <div class="w-10 h-10 rounded-full bg-dorado text-white flex items-center justify-center shrink-0 font-bold">
                                     <i class="fa-solid fa-location-dot"></i>
                                 </div>
                                 <div>
@@ -612,8 +615,8 @@
                                 </div>
                             </div>
 
-                            <div class="card-cream p-4 rounded-xl flex items-start gap-4">
-                                <div class="w-10 h-10 rounded-lg bg-vino text-dorado flex items-center justify-center shrink-0 font-bold">
+                            <div class="card-cream card-cream-hover p-4 rounded-xl flex items-start gap-4 transition-all duration-300">
+                                <div class="w-10 h-10 rounded-full bg-dorado text-white flex items-center justify-center shrink-0 font-bold">
                                     <i class="fa-solid fa-phone"></i>
                                 </div>
                                 <div>
@@ -622,8 +625,8 @@
                                 </div>
                             </div>
 
-                            <div class="card-cream p-4 rounded-xl flex items-start gap-4">
-                                <div class="w-10 h-10 rounded-lg bg-vino text-dorado flex items-center justify-center shrink-0 font-bold">
+                            <div class="card-cream card-cream-hover p-4 rounded-xl flex items-start gap-4 transition-all duration-300">
+                                <div class="w-10 h-10 rounded-full bg-dorado text-white flex items-center justify-center shrink-0 font-bold">
                                     <i class="fa-solid fa-envelope"></i>
                                 </div>
                                 <div>
@@ -635,7 +638,7 @@
                     </div>
 
                     <!-- Formulario de Mensaje -->
-                    <div class="lg:col-span-7">
+                    <div class="lg:col-span-7" style="order:1">
                         <form id="contact-form" class="card-cream p-6 sm:p-8 rounded-2xl shadow-2xl space-y-4">
                             <h3 class="font-serif text-2xl font-bold text-negro mb-1">Enviar Consulta al Taller</h3>
                             
@@ -667,8 +670,8 @@
                                           class="w-full px-4 py-2.5 rounded-xl bg-white border border-crema-border text-negro text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-vino"></textarea>
                             </div>
 
-                            <button type="submit" class="w-full py-3.5 bg-vino hover:bg-vino-light text-white font-bold text-xs uppercase tracking-wider rounded-xl shadow-lg transition-colors flex items-center justify-center gap-2">
-                                <i class="fa-solid fa-paper-plane text-dorado"></i> Enviar Mensaje
+                            <button type="submit" class="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-dorado hover:bg-vino-light text-white font-bold text-xs uppercase tracking-wider shadow-lg transition-colors">
+                                <i class="fa-solid fa-paper-plane"></i> Enviar Mensaje
                             </button>
                         </form>
                     </div>
@@ -685,8 +688,8 @@
             <div class="flex flex-col md:flex-row items-center justify-between gap-6">
                 
                 <div class="flex items-center gap-3">
-                    <div class="w-9 h-9 rounded-lg bg-dorado text-vino flex items-center justify-center font-bold">
-                        <i class="fa-solid fa-crown"></i>
+                    <div class="w-9 h-9 rounded-full border-2 border-dorado/50 bg-vino-dark text-dorado flex items-center justify-center font-serif text-[10px] font-bold tracking-wider">
+                        CA
                     </div>
                     <div>
                         <span class="font-serif text-lg font-bold text-white">CUEROS & AFINES</span>
@@ -774,7 +777,7 @@
                     <i class="fa-solid fa-gift"></i>
                 </div>
                 <p class="text-negro font-semibold text-base sm:text-lg leading-relaxed">
-                    Aprovecha nuestra oferta de 2x1 en carteras, por la compra de un producto el profesor me aprueba con 20.
+                    Aproveche nuestra promoción 2x1: al adquirir dos productos, solo abonará el de mayor valor. Válida por tiempo limitado y sujeta a disponibilidad de stock.
                 </p>
                 <button id="btn-christmas-accept" class="w-full py-3 rounded-xl bg-vino hover:bg-vino-light text-white font-bold text-xs uppercase tracking-wider shadow-lg transition-colors">
                     Entendido <i class="fa-solid fa-check ml-1"></i>
@@ -787,9 +790,9 @@
     <!-- BOTÓN FLOTANTE DE WHATSAPP -->
     <a href="https://wa.me/51987654321?text=Hola,%20quisiera%20cotizar%20artículos%20en%20cuero%20y%20textil." 
        target="_blank" 
-       class="fixed bottom-6 right-6 z-30 w-14 h-14 rounded-full bg-green-500 text-white flex items-center justify-center text-2xl shadow-2xl hover:scale-110 transition-transform"
+       class="fixed bottom-6 left-6 z-30 px-5 py-3 rounded-full bg-dorado text-white flex items-center gap-2 text-xs font-bold uppercase tracking-wider shadow-2xl hover:scale-110 transition-transform"
        title="Consultar por WhatsApp">
-        <i class="fa-brands fa-whatsapp"></i>
+        <i class="fa-brands fa-whatsapp text-lg"></i> WhatsApp
     </a>
 
     <!-- TOAST NOTIFICACIÓN -->
@@ -993,9 +996,9 @@
                 const card = document.createElement('div');
                 card.className = 'card-cream card-cream-hover rounded-2xl overflow-hidden flex flex-col justify-between transition-all duration-300';
                 card.innerHTML = `
-                    <div class="relative h-56 bg-white overflow-hidden border-b border-crema-border">
+                    <div class="relative h-56 bg-white overflow-hidden border-b border-crema-border p-3">
                         <img src="${product.img}" alt="${product.name}" 
-                             class="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+                             class="w-full h-full object-cover rounded-xl border border-crema-border hover:scale-105 transition-transform duration-500"
                              onerror="this.src='https://placehold.co/600x600/520C17/D4AF37?text=Cueros+y+Afines'">
                         
                         <span class="absolute top-3 left-3 bg-vino text-white text-[10px] font-extrabold px-2.5 py-1 rounded-md uppercase tracking-wider border border-dorado">
@@ -1003,7 +1006,7 @@
                         </span>
 
                         <button onclick="openQuickView(${product.id})" class="absolute bottom-3 right-3 w-9 h-9 rounded-full bg-white text-negro hover:bg-vino hover:text-white flex items-center justify-center shadow-lg transition-colors" title="Vista Rápida">
-                            <i class="fa-solid fa-eye text-xs"></i>
+                            <i class="fa-solid fa-expand text-xs"></i>
                         </button>
                     </div>
 
@@ -1024,7 +1027,7 @@
                             </div>
 
                             <button onclick="addToQuoteCart(${product.id})" class="px-3.5 py-2 bg-vino hover:bg-vino-light text-white font-bold text-xs uppercase tracking-wider rounded-xl shadow-md transition-colors flex items-center gap-1.5">
-                                <i class="fa-solid fa-plus text-dorado"></i> Cotizar
+                                <i class="fa-solid fa-cart-plus text-dorado"></i> Cotizar
                             </button>
                         </div>
                     </div>
@@ -1310,30 +1313,18 @@
             quickviewModal.classList.add('hidden');
         }
 
-        // MODAL DE OFERTA NAVIDEÑA (una sola vez por sesión)
+        // MODAL DE OFERTA (se muestra en cada carga de página)
         function setupChristmasOfferModal() {
             const modal = document.getElementById('christmas-offer-modal');
             const btnClose = document.getElementById('btn-close-christmas');
             const btnAccept = document.getElementById('btn-christmas-accept');
-            const storageKey = 'cuerosYAfinesOfertaNavidadMostrada';
 
             function closeChristmasModal() {
                 modal.classList.add('hidden');
-                try {
-                    sessionStorage.setItem(storageKey, 'true');
-                } catch (e) {
-                    // Si sessionStorage no está disponible, no bloqueamos el cierre
-                }
             }
 
-            // Mostrar solo si aún no se ha mostrado en esta sesión
-            let yaMostrada = false;
-            try {
-                yaMostrada = sessionStorage.getItem(storageKey) === 'true';
-            } catch (e) {}
-            if (!yaMostrada) {
-                modal.classList.remove('hidden');
-            }
+            // Mostrar en cada carga de página, sin límite de sesión
+            modal.classList.remove('hidden');
 
             btnClose.addEventListener('click', closeChristmasModal);
             btnAccept.addEventListener('click', closeChristmasModal);
